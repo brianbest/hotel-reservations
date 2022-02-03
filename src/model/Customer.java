@@ -24,4 +24,9 @@ public class Customer {
         return firstName + " " + lastName;
     }
 
+    @Override
+    public String toString() {
+        return "Name: " +getFullName() + " email:" + email;
+    }
+
 }
