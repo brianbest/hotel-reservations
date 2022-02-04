@@ -1,8 +1,8 @@
 package model;
 
 public class FreeRoom extends Room{
-    public FreeRoom() {
-        super();
+    public FreeRoom(String roomNumber, Double price, RoomType roomTypeEnum) {
+        super(roomNumber, price, roomTypeEnum);
         this.price = 0.0;
     }
 

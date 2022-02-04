@@ -5,6 +5,12 @@ public class Room implements IRoomInterface{
     protected Double price;
     private RoomType roomTypeEnum;
 
+    public Room(String roomNumber, Double price, RoomType roomTypeEnum) {
+        this.roomTypeEnum = roomTypeEnum;
+        this.roomNumber = roomNumber;
+        this.price = price;
+    }
+
     @Override
     public String getRoomNumber() {
         return roomNumber;
