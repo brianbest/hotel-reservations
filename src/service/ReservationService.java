@@ -1,19 +1,20 @@
 package service;
 
-import model.Customer;
-import model.IRoomInterface;
-import model.Reservation;
+import model.*;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 public class ReservationService {
 
-    public static Collection<Reservation> reservations;
-    public static Collection<IRoomInterface> rooms;
+    public static Collection<Reservation> reservations = new HashSet<Reservation>();
+    public static Collection<IRoomInterface> rooms = new HashSet<IRoomInterface>();
 
-    public static void addRoom(IRoomInterface room) {
-        rooms.add(room);
+    public static Room addRoom(String roomNumber, Double price, RoomType roomTypeEnum) {
+        Room newRoom = new FreeRoom(roomNumber,price,roomTypeEnum);
+        rooms.add(newRoom);
+        return newRoom;
     }
 
     public static Collection<IRoomInterface> getRooms() {

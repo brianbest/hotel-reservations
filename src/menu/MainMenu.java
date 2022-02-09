@@ -1,7 +1,9 @@
 package menu;
 
+import api.AdminResource;
 import api.HotelResource;
 import model.Customer;
+import model.RoomType;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -59,6 +61,7 @@ public class MainMenu extends Menu{
     }
 
     public void findAndReserveARoom() {
+
         // show all rooms
         // select a room
         // if room is invalid retry
@@ -93,6 +96,7 @@ public class MainMenu extends Menu{
     }
 
     public static void startAdminMenu() {
+
         // Start admin menu
         AdminMenu.startMenu();
     }

@@ -1,8 +1,6 @@
 package api;
 
-import model.Customer;
-import model.IRoomInterface;
-import model.Reservation;
+import model.*;
 import service.CustomerService;
 import service.ReservationService;
 
@@ -15,11 +13,8 @@ public class AdminResource {
         return CustomerService.getCustomer(email);
     }
     
-    public static void addRoom(List<IRoomInterface> rooms){
-        for (IRoomInterface room :
-                rooms) {
-            ReservationService.addRoom(room);
-        }
+    public static Room addRoom(String roomNumber, Double price, RoomType roomTypeEnum){
+        return ReservationService.addRoom(roomNumber, price, roomTypeEnum);
     }
 
     public static Collection<IRoomInterface> getAllRooms() {

@@ -33,6 +33,6 @@ public class Room implements IRoomInterface{
 
     @Override
     public String toString(){
-        return "Room Price: " + price + " Room Number: " + roomNumber + " type: " + roomTypeEnum;
+        return  "Room Number: " + roomNumber + " type: " + roomTypeEnum + " Room Price: " + price;
     }
 }

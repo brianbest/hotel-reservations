@@ -1,5 +1,6 @@
 package test;
 
+import menu.AdminMenu;
 import model.Customer;
 
 public class customerTest {
@@ -7,6 +8,7 @@ public class customerTest {
     public static void main(String[] args) {
         assertThatCustomerBuilds();
         assertThatCustomerWillThrowOnInvalidEmail();
+        assertThatTestDataWillAppear();
     }
 
     public static void assertThatCustomerBuilds() {
@@ -20,5 +22,11 @@ public class customerTest {
         } catch (IllegalArgumentException ex){
             System.out.println("Worked: " + ex.getLocalizedMessage());
         }
+    }
+
+    public static void assertThatTestDataWillAppear(){
+        AdminMenu.createTestData();
+        AdminMenu.displayAllRooms();
+        AdminMenu.displayAllCustomers();
     }
 }
