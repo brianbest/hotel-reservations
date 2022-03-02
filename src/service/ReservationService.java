@@ -33,8 +33,8 @@ public class ReservationService {
         return null;
     }
 
-    public static Collection<IRoomInterface> findRooms(Date checkInDate, Date checkOutDate){
-        return null;
+    public static Collection<IRoomInterface> findRooms(Date checkInDate, Date checkOutDate) {
+        return rooms;
     }
 
     public static Collection<Reservation> getCustomerReservation(Customer customer){

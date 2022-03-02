@@ -2,15 +2,25 @@ package menu;
 
 import api.AdminResource;
 import api.HotelResource;
+import exception.DuplicateEmailException;
 import model.Customer;
+import model.IRoomInterface;
+import model.Room;
 import model.RoomType;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainMenu extends Menu{
 
     public static void main(String[] args) {
+        AdminResource.addRoom("100", 200.00, RoomType.SINGLE);
+        AdminResource.addRoom("101", 200.00, RoomType.DOUBLE);
+        AdminResource.addRoom("102", 200.00, RoomType.SINGLE);
         startMenu();
     }
 
@@ -43,12 +53,13 @@ public class MainMenu extends Menu{
     public static void parseInput(String input) {
         if (input.equals("1")) {
             System.out.println("Selected " + input);
-            startMenu();
+            findAndReserveARoom();
         } else if (input.equals("2")) {
             System.out.println("Selected " + input);
         } else if (input.equals("3")) {
             System.out.println("Selected " + input);
             createAccount();
+            startMenu();
         } else if (input.equals("4")) {
             System.out.println("Selected " + input);
             startAdminMenu();
@@ -60,14 +71,34 @@ public class MainMenu extends Menu{
 
     }
 
-    public void findAndReserveARoom() {
+    public static void findAndReserveARoom() {
+        if (HotelResource.getCurrentUser() == null) {
+            System.out.println("Please Create An Account");
+            createAccount();
+        }
 
-        // show all rooms
-        // select a room
+        Date checkIn = attemptToGetDateFromInput("Check in date");
+        Date checkOut = attemptToGetDateFromInput("Check out date");
+        Collection<IRoomInterface> bookableRooms = HotelResource.findARoom(checkIn, checkOut);
+        if(bookableRooms.isEmpty()){
+            System.out.println("No rooms available for selected date range, finding additional recommendations...");
+            Calendar c = Calendar.getInstance();
+            c.setTime(checkIn);
+            c.add(Calendar.DATE, 7);
+
+            c.setTime(checkOut);
+            c.add(Calendar.DATE, 7);
+            checkOut = c.getTime();
+        }
+        for (IRoomInterface room :
+                bookableRooms) {
+            System.out.println(room);
+        }
+        // select a room by room number
         // if room is invalid retry
-        // search for a customer by email
-        // if no customer found create customer
-        //
+        // reserve room using current user.
+        IRoomInterface room = HotelResource.getRoom(requireNonNullInput("Select a room:"));
+        HotelResource.bookARoom(HotelResource.getCurrentUser(), room, checkIn, checkOut);
     }
 
     public void seeMyReservations() {
@@ -85,14 +116,26 @@ public class MainMenu extends Menu{
     private static void attemptToCreateAccountWithUnvalidatedEmail(String firstName, String lastName) {
         String email = requireNonNullInput("Email:");
         try {
-            HotelResource.createACustomer(email, firstName, lastName);
-            Customer createdCustomer = HotelResource.getCustomer(email);
-            System.out.println("Customer " + createdCustomer);
-            startMenu();
-        } catch (Exception ex){
-            System.out.println("Please enter a vaild email");
+            HotelResource.createCurrentUser(email, firstName, lastName);
+        } catch (DuplicateEmailException ex){
+            System.out.println(ex.getLocalizedMessage());
             attemptToCreateAccountWithUnvalidatedEmail(firstName, lastName);
         }
+        Customer createdCustomer = HotelResource.getCustomer(email);
+        System.out.println("Customer " + createdCustomer);
+    }
+
+    private static Date attemptToGetDateFromInput(String message){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date requestedDate = null;
+        try {
+            requestedDate = formatter.parse(requireNonNullInput(message + " (dd/mm/yyy):"));
+        } catch (Exception ex){
+            System.out.println("Please enter a vaild date");
+            return attemptToGetDateFromInput(message);
+        }
+
+        return requestedDate;
     }
 
     public static void startAdminMenu() {

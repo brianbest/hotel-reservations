@@ -140,9 +140,12 @@ public class AdminMenu {
         AdminResource.addRoom("4", 2.0, RoomType.SINGLE);
         AdminResource.addRoom("5", 2.0, RoomType.SINGLE);
         AdminResource.addRoom("6", 2.0, RoomType.SINGLE);
-
-        HotelResource.createACustomer("name@email.com", "Frank", "Stone");
-        HotelResource.createACustomer("1name@email.com", "Anni", "Pebble");
-        HotelResource.createACustomer("2name@email.com", "Alex", "Bolder");
+        try {
+            HotelResource.createACustomer("name@email.com", "Frank", "Stone");
+            HotelResource.createACustomer("1name@email.com", "Anni", "Pebble");
+            HotelResource.createACustomer("2name@email.com", "Alex", "Bolder");
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
     }
 }
