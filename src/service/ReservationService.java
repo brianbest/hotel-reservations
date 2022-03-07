@@ -25,12 +25,20 @@ public class ReservationService {
         return reservations;
     }
 
-    public static IRoomInterface getARoom(String roomId){
-        return null;
+    public static IRoomInterface getARoom(String roomNumber){
+        IRoomInterface selectedRoom = null;
+        for (IRoomInterface room : rooms) {
+            if (room.getRoomNumber().equals(roomNumber)) {
+                selectedRoom = room;
+            }
+        }
+        return selectedRoom;
     }
 
     public static Reservation reserveARoom(Customer customer, IRoomInterface room, Date checkInDate, Date checkOutDate){
-        return null;
+        Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
+        reservations.add(reservation);
+        return reservation;
     }
 
     public static Collection<IRoomInterface> findRooms(Date checkInDate, Date checkOutDate) {

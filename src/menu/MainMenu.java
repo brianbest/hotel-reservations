@@ -3,10 +3,8 @@ package menu;
 import api.AdminResource;
 import api.HotelResource;
 import exception.DuplicateEmailException;
-import model.Customer;
-import model.IRoomInterface;
-import model.Room;
-import model.RoomType;
+import model.*;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -97,8 +95,10 @@ public class MainMenu extends Menu{
         // select a room by room number
         // if room is invalid retry
         // reserve room using current user.
-        IRoomInterface room = HotelResource.getRoom(requireNonNullInput("Select a room:"));
-        HotelResource.bookARoom(HotelResource.getCurrentUser(), room, checkIn, checkOut);
+        String roomId = requireNonNullInput("Select a room:");
+        IRoomInterface room = HotelResource.getRoom(roomId);
+        Reservation reservation = HotelResource.bookARoom(HotelResource.getCurrentUser(), room, checkIn, checkOut);
+        System.out.println(reservation);
     }
 
     public void seeMyReservations() {
