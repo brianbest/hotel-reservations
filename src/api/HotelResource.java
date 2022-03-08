@@ -9,6 +9,8 @@ import service.ReservationService;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class HotelResource {
     public static Customer getCustomer(String email){
@@ -31,9 +33,13 @@ public class HotelResource {
         return ReservationService.reserveARoom(customer, room, checkInDate,checkOutDate);
     }
 
-    public static Collection<Reservation> getCustomersReservations(String customerEmail){
-        Customer foundCustomer = CustomerService.getCustomer(customerEmail);
-        return ReservationService.getCustomerReservation(foundCustomer);
+    public static Collection<Reservation> getCurrentCustomersReservations(){
+        Customer currentUser = CustomerService.getCurrentUser();
+        Collection<Reservation> reservations = ReservationService.getReservations();
+        return reservations.stream()
+                .filter(reservation -> reservation.getCustomer().getEmail().equals(currentUser.getEmail()))
+                .collect(Collectors.toCollection(HashSet::new));
+
     }
 
     public static Collection<IRoomInterface> findARoom(Date checkIn, Date checkOut){

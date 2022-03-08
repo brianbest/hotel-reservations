@@ -52,6 +52,7 @@ public class MainMenu extends Menu{
         if (input.equals("1")) {
             System.out.println("Selected " + input);
             findAndReserveARoom();
+            startMenu();
         } else if (input.equals("2")) {
             System.out.println("Selected " + input);
         } else if (input.equals("3")) {
@@ -78,23 +79,21 @@ public class MainMenu extends Menu{
         Date checkIn = attemptToGetDateFromInput("Check in date");
         Date checkOut = attemptToGetDateFromInput("Check out date");
         Collection<IRoomInterface> bookableRooms = HotelResource.findARoom(checkIn, checkOut);
-        if(bookableRooms.isEmpty()){
-            System.out.println("No rooms available for selected date range, finding additional recommendations...");
-            Calendar c = Calendar.getInstance();
-            c.setTime(checkIn);
-            c.add(Calendar.DATE, 7);
-
-            c.setTime(checkOut);
-            c.add(Calendar.DATE, 7);
-            checkOut = c.getTime();
-        }
+//        if(bookableRooms.isEmpty()){
+//            System.out.println("No rooms available for selected date range, finding additional recommendations...");
+//            Calendar c = Calendar.getInstance();
+//            c.setTime(checkIn);
+//            c.add(Calendar.DATE, 7);
+//
+//            c.setTime(checkOut);
+//            c.add(Calendar.DATE, 7);
+//            checkOut = c.getTime();
+//        }
         for (IRoomInterface room :
                 bookableRooms) {
             System.out.println(room);
         }
-        // select a room by room number
-        // if room is invalid retry
-        // reserve room using current user.
+
         String roomId = requireNonNullInput("Select a room:");
         IRoomInterface room = HotelResource.getRoom(roomId);
         Reservation reservation = HotelResource.bookARoom(HotelResource.getCurrentUser(), room, checkIn, checkOut);
@@ -103,6 +102,10 @@ public class MainMenu extends Menu{
 
     public void seeMyReservations() {
         // get a customer
+//        for (IRoomInterface room :
+//                bookableRooms) {
+//            System.out.println(room);
+//        }
         // get all rooms for customer
         // display reservations
     }
